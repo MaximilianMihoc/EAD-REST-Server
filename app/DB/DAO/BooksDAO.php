@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Admins team
  * definition of the book DAO (database access object)
  */
 class BooksDAO {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Luca
+ * @author Admins team
  * definition of the author DAO (database access object)
  */
 class AuthorsDAO {
