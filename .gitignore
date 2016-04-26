@@ -4,4 +4,3 @@
 .settings/*
 
 /app/tmp/*
-/app/conf/config.inc.php
