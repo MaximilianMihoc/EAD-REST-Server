@@ -85,12 +85,24 @@ $app->map ( "/author/:id/books", "authenticate", function ($authorID = null) use
 	
 	$httpMethod = $app->request->getMethod ();
 	$action = null;
-	$parameters ["id"] = $authorID; // prepare parameters to be passed to the controller (example: ID)
+	$parameters ["id"] = $authorID;
 	
 	if (!empty($authorID) and is_numeric ( $authorID )) {
-		$action = ACTION_GET_BOOKS_BY_AUTHOR;
+		$action = ACTION_GET_AUTHOR_BOOKS;
 	}
 	return new loadRunMVCComponents ( "BookModel", "BookController", "view", $action, $app, $parameters );
+} )->via ( "GET" );
+
+$app->map ( "/book/:id/authors", "authenticate", function ($bookID = null) use($app) {
+	
+	$httpMethod = $app->request->getMethod ();
+	$action = null;
+	$parameters ["id"] = $bookID; 
+	
+	if (!empty($bookID) and is_numeric ( $bookID )) {
+		$action = ACTION_GET_BOOK_AUTHORS;
+	}
+	return new loadRunMVCComponents ( "AuthorModel", "AuthorController", "view", $action, $app, $parameters );
 } )->via ( "GET" );
 
 $app->map ( "/authors/search(/:searchingString)", "authenticate", function ($searchingString = null) use($app) {

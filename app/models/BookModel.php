@@ -1,7 +1,7 @@
 <?php
 require_once "DB/pdoDbManager.php";
 require_once "DB/DAO/BooksDAO.php";
-require_once "Validation.php";
+require_once "/../TDD/Validation/Validation.php";
 class BookModel {
 	private $BooksDAO; // list of DAOs used by this model
 	private $dbmanager; // dbmanager
@@ -22,6 +22,14 @@ class BookModel {
 		}
 		return false;
 	}
+	
+	public function getBooksByAuthorId ( $authorID ) {
+		if($authorID != null){
+			return ($this->BooksDAO->getBooksByAuthorId ( $authorID ));
+		} 
+		return false;
+	}
+	
 	/**
 	 *
 	 * @param array $BookRepresentation:

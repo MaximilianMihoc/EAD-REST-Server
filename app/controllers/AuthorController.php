@@ -33,6 +33,9 @@ class AuthorController {
 				$string = $parameteres ["SearchingString"];
 				$this->searchAuthors ( $string );
 				break;
+			case ACTION_GET_BOOK_AUTHORS :
+				$this->getAuthorsByBookId ( $id );
+				break;
 			case null :
 				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_CLIENT_ERROR);
 				break;
@@ -45,6 +48,17 @@ class AuthorController {
 		} else {
 			$answer = $this->model->getAuthors ( $authorID );
 		}
+			
+		if ($answer != null) {
+			$this->setApiResponseAndStatus(HTTPSTATUS_OK, $answer);
+		} else {
+			$this->setApiResponseAndStatus(HTTPSTATUS_NOCONTENT, GENERAL_NOCONTENT_MESSAGE);
+		}
+	}
+	
+	private function getAuthorsByBookId( $bookID ) {
+		
+		$answer = $this->model->getAuthorsByBookId ( $bookID );
 			
 		if ($answer != null) {
 			$this->setApiResponseAndStatus(HTTPSTATUS_OK, $answer);

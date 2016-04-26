@@ -1,7 +1,7 @@
 <?php
 require_once "DB/pdoDbManager.php";
 require_once "DB/DAO/UsersDAO.php";
-require_once "Validation.php";
+require_once "/../TDD/Validation/Validation.php";
 class UserModel {
 	private $UsersDAO; // list of DAOs used by this model
 	private $dbmanager; // dbmanager
@@ -15,7 +15,7 @@ class UserModel {
 	}
 	public function getUserByEmail ( $email ) {
 		//validate username and password
-		if($this->validationSuite->isEmailValid($email)) {
+		if($this->validationSuite->isValidEmail($email)) {
 			return ($this->UsersDAO->getUserByEmail ( $email ));
 		}
 		return (false);

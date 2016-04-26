@@ -79,5 +79,21 @@ class AuthorsDAO {
 		$arrayOfResults = $this->dbManager->fetchResults( $sqlStmt );
 		return $arrayOfResults;
 	}
+	
+	public function getAuthorsByBookId($bookId) {
+		$sql = "SELECT authors.id, authors.name, authors.surname, authors.email, authors.phone ";
+		$sql .= "FROM authors ";
+		$sql .= "JOIN books ON authors.id = books.authorID ";
+		$sql .= "WHERE books.ISBN = (Select books.ISBN FROM books WHERE books.id = ?) ";
+		$sql .= "ORDER BY authors.name ";
+		
+		$stmt = $this->dbManager->prepareQuery ( $sql );
+		$this->dbManager->bindValue ( $stmt, 1, $bookId, $this->dbManager->INT_TYPE );
+		$this->dbManager->executeQuery ( $stmt );
+		$rows = $this->dbManager->fetchResults ( $stmt );
+		
+		return ($rows);
+	}
+	
 }
 ?>

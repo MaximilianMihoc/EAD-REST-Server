@@ -33,6 +33,7 @@ define("ACTION_CREATE_AUTHOR", 45);
 define("ACTION_UPDATE_AUTHOR", 46);
 define("ACTION_DELETE_AUTHOR", 47);
 define("ACTION_SEARCH_AUTHORS", 48);
+define("ACTION_GET_BOOK_AUTHORS", 49);
 
 /* actions for the Books REST resource */
 define("ACTION_GET_BOOK", 53);
@@ -98,7 +99,8 @@ define("TABLE_USER_PASSWORD_LENGTH", 40);
 define("TABLE_AUTHOR_NAME_LENGTH", 25);
 define("TABLE_AUTHOR_SURNAME_LENGTH", 25);
 define("TABLE_AUTHOR_EMAIL_LENGTH", 50);
-define("TABLE_AUTHOR_PHONE_LENGTH", 10);
+define("TABLE_AUTHOR_MIN_PHONE", 100000000);
+define("TABLE_AUTHOR_MAX_PHONE", 999999999);
 
 /* representation of a new author in the DB */
 define("TABLE_BOOK_TITLE_LENGTH", 100);

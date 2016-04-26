@@ -13,6 +13,7 @@ class BooksDAO {
 		$sql .= "FROM books ";
 		if ($id != null)
 			$sql .= "WHERE books.id=? ";
+		$sql .= "GROUP BY books.ISBN ";
 		$sql .= "ORDER BY books.title ";
 		
 		$stmt = $this->dbManager->prepareQuery ( $sql );
@@ -78,6 +79,20 @@ class BooksDAO {
 		
 		$arrayOfResults = $this->dbManager->fetchResults( $sqlStmt );
 		return $arrayOfResults;
+	}
+	
+	public function getBooksByAuthorId ( $authorID ) {
+		$sql = "SELECT * ";
+		$sql .= "FROM books ";
+		$sql .= "WHERE books.authorID=? ";
+		$sql .= "ORDER BY books.title ";
+		
+		$stmt = $this->dbManager->prepareQuery ( $sql );
+		$this->dbManager->bindValue ( $stmt, 1, $authorID, $this->dbManager->INT_TYPE );
+		$this->dbManager->executeQuery ( $stmt );
+		$rows = $this->dbManager->fetchResults ( $stmt );
+		
+		return ($rows);
 	}
 }
 ?>

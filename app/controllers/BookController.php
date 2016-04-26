@@ -2,9 +2,12 @@
 class BookController {
 	private $slimApp;
 	private $model;
+	private $authorModel;
 	private $requestBody;
 	public function __construct($model, $action = null, $slimApp, $parameteres = null) {
+		include_once "models/AuthorModel.php";
 		$this->model = $model;
+		$this->authorModel = new AuthorModel ();
 		$this->slimApp = $slimApp;
 		$this->requestBody = json_decode ( $this->slimApp->request->getBody (), true ); 
 		
@@ -33,6 +36,9 @@ class BookController {
 				$string = $parameteres ["SearchingString"];
 				$this->searchBooks ( $string );
 				break;
+			case ACTION_GET_AUTHOR_BOOKS :
+				$this->getBooksByAuthorId (  $id  );
+				break;
 			case null :
 				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_CLIENT_ERROR);
 				break;
@@ -53,9 +59,21 @@ class BookController {
 		}
 	}
 	
+	private function getBooksByAuthorId( $authorId ) {
+		$answer = $this->model->getBooksByAuthorId ( $authorId );	
+		if ($answer != null) {
+			$this->setApiResponseAndStatus(HTTPSTATUS_OK, $answer);
+		} else {
+			$this->setApiResponseAndStatus(HTTPSTATUS_NOCONTENT, GENERAL_NOCONTENT_MESSAGE);
+		}
+	}
+	
 	private function createNewBook($newBook) {
-		if ($newID = $this->model->createNewBook ( $newBook )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+		$authorID = $newBook['authorID'];
+		if($this->authorModel->getAuthors($authorID)) {
+			if ($newID = $this->model->createNewBook ( $newBook )) {
+				$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+			}
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
