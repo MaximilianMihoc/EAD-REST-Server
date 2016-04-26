@@ -1,7 +1,7 @@
 # PHP 
 
-.buildpath 
-.settings
+.buildpath
+.settings/*
 
 /app/tmp/*
 /app/conf/config.inc.php
