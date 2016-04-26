@@ -55,7 +55,7 @@ class AuthorController {
 	
 	private function createNewAuthor($newAuthor) {
 		if ($newID = $this->model->createNewAuthor ( $newAuthor )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, $this->buildMessage(GENERAL_RESOURCE_CREATED, $newID));
+			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
@@ -70,7 +70,7 @@ class AuthorController {
 	
 	private function updateAuthor($authorId, $toUpdateAuthor) {
 		if ($updatedRows = $this->model->updateAuthor ( $authorId, $toUpdateAuthor )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_OK, $this->buildMessage(GENERAL_RESOURCE_UPDATED, $authorId));
+			$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $authorId);
 		} else {
 			if($authorId == null)
 				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDINDEX);
@@ -88,27 +88,23 @@ class AuthorController {
 		}
 	}
 	
-	private function setApiResponseAndStatus($status, $response)
+	private function setApiResponseAndStatus($status, $response, $id = null)
 	{
 		$this->slimApp->response ()->setStatus ( $status );
 		if (!is_array($response) && !is_bool($response)) 
 		{
-			$Message = array ( GENERAL_MESSAGE_LABEL => $response );
+			if ($id == null) {
+				$Message = array ( GENERAL_MESSAGE_LABEL => $response );
+			} else {
+				$Message = array ( 
+					GENERAL_MESSAGE_LABEL => $response,
+					"id" => $id
+				);
+			}
 			$this->model->apiResponse = $Message;
 		} else {
 			$this->model->apiResponse = $response;
 		}
-	}
-	
-	// this is used to show the id of the created or updated record along with the message
-	private function buildMessage($response, $id)
-	{
-		$Message = array ( 
-			GENERAL_MESSAGE_LABEL => $response,
-			"id" => $id
-		);
-		
-		return $Message;
 	}
 }
 ?>

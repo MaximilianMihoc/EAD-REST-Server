@@ -55,7 +55,7 @@ class BookController {
 	
 	private function createNewBook($newBook) {
 		if ($newID = $this->model->createNewBook ( $newBook )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, $this->buildMessage(GENERAL_RESOURCE_CREATED, $newID));
+			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
@@ -70,7 +70,7 @@ class BookController {
 	
 	private function updateBook($bookId, $toUpdateBook) {
 		if ($updatedRows = $this->model->updateBook ( $bookId, $toUpdateBook )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_OK, $this->buildMessage(GENERAL_RESOURCE_UPDATED, $bookId));
+			$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $bookId);
 		} else {
 			if($bookId == null)
 				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDINDEX);
@@ -88,27 +88,24 @@ class BookController {
 		}
 	}
 	
-	private function setApiResponseAndStatus($status, $response)
+	private function setApiResponseAndStatus($status, $response, $id = null)
 	{
 		$this->slimApp->response ()->setStatus ( $status );
 		if (!is_array($response) && !is_bool($response)) 
 		{
-			$Message = array ( GENERAL_MESSAGE_LABEL => $response );
+			if ($id == null) {
+				$Message = array ( GENERAL_MESSAGE_LABEL => $response );
+			} else {
+				$Message = array ( 
+					GENERAL_MESSAGE_LABEL => $response,
+					"id" => $id
+				);
+			}
+			
 			$this->model->apiResponse = $Message;
 		} else {
 			$this->model->apiResponse = $response;
 		}
-	}
-	
-	// this is used to show the id of the created or updated record along with the message
-	private function buildMessage($response, $id)
-	{
-		$Message = array ( 
-			GENERAL_MESSAGE_LABEL => $response,
-			"id" => $id
-		);
-		
-		return $Message;
 	}
 }
 ?>

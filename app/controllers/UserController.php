@@ -76,7 +76,7 @@ class UserController {
 	
 	private function createNewUser($newUser) {
 		if ($newID = $this->model->createNewUser ( $newUser )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, $this->buildMessage(GENERAL_RESOURCE_CREATED, $authorId));
+			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $authorId);
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
@@ -92,7 +92,7 @@ class UserController {
 	
 	private function updateUser($userId, $toUpdateUser) {
 		if ($this->model->updateUser ( $userId, $toUpdateUser )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_OK, $this->buildMessage(GENERAL_RESOURCE_UPDATED, $userId));
+			$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $userId);
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
@@ -111,22 +111,18 @@ class UserController {
 		$this->slimApp->response ()->setStatus ( $status );
 		if (!is_array($response) && !is_bool($response)) 
 		{
-			$Message = array ( GENERAL_MESSAGE_LABEL => $response );
+			if ($id == null) {
+				$Message = array ( GENERAL_MESSAGE_LABEL => $response );
+			} else {
+				$Message = array ( 
+					GENERAL_MESSAGE_LABEL => $response,
+					"id" => $id
+				);
+			}
 			$this->model->apiResponse = $Message;
 		} else {
 			$this->model->apiResponse = $response;
 		}
-	}
-	
-	// this is used to show the id of the created or updated record along with the message
-	private function buildMessage($response, $id)
-	{
-		$Message = array ( 
-			GENERAL_MESSAGE_LABEL => $response,
-			"id" => $id
-		);
-		
-		return $Message;
 	}
 }
 ?>
