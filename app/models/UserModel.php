@@ -36,9 +36,7 @@ class UserModel {
 	 */
 	public function createNewUser($newUser) {
 		// validation of the values of the new user
-		echo ("Hello");
 		if ($this->validationSuite->isUserValid($newUser)) {
-			echo ("Hello 2");
 			return $this->UsersDAO->insert ( $newUser );
 		}
 		

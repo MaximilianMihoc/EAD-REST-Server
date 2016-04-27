@@ -76,7 +76,7 @@ class UserController {
 	
 	private function createNewUser($newUser) {
 		if ($newID = $this->model->createNewUser ( $newUser )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $authorId);
+			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
