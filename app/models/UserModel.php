@@ -32,20 +32,14 @@ class UserModel {
 	/**
 	 *
 	 * @param array $UserRepresentation:
-	 *        	an associative array containing the detail of the new user
+	 *   an associative array containing the detail of the new user
 	 */
 	public function createNewUser($newUser) {
 		// validation of the values of the new user
-		// compulsory values
-		if (! empty ( $newUser ["name"] ) && ! empty ( $newUser ["surname"] ) && ! empty ( $newUser ["email"] ) && ! empty ( $newUser ["password"] )) {
-			/*
-			 * the model knows the representation of a user in the database and this is: name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(40)
-			 */
-			
-			if (($this->validationSuite->isLengthStringValid ( $newUser ["name"], TABLE_USER_NAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $newUser ["surname"], TABLE_USER_SURNAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $newUser ["email"], TABLE_USER_EMAIL_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $newUser ["password"], TABLE_USER_PASSWORD_LENGTH ))) 
-			{
-					return $this->UsersDAO->insert ( $newUser );
-			}
+		echo ("Hello");
+		if ($this->validationSuite->isUserValid($newUser)) {
+			echo ("Hello 2");
+			return $this->UsersDAO->insert ( $newUser );
 		}
 		
 		// if validation fails or insertion fails
@@ -53,10 +47,8 @@ class UserModel {
 	}
 	public function updateUser($userID, $userNewRepresentation) {
 		if (is_numeric ( $userID ))
-			if (! empty ( $userNewRepresentation ["name"] ) && ! empty ( $userNewRepresentation ["surname"] ) && ! empty ( $userNewRepresentation ["email"] ) && ! empty ( $userNewRepresentation ["password"] )) {
-				
-				if($updateRows = $this->UsersDAO->updateUser($userID, $userNewRepresentation))
-				{
+			if ($this->validationSuite->isUserValid($newUser)) {
+				if($updateRows = $this->UsersDAO->updateUser($userID, $userNewRepresentation)) {
 					return ($updateRows);
 				}
 			}

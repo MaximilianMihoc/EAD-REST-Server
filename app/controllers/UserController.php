@@ -106,7 +106,7 @@ class UserController {
 		}
 	}
 	
-	private function setApiResponseAndStatus($status, $response)
+	private function setApiResponseAndStatus($status, $response, $id = null)
 	{
 		$this->slimApp->response ()->setStatus ( $status );
 		if (!is_array($response) && !is_bool($response)) 

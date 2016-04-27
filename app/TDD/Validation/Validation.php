@@ -4,9 +4,7 @@ class Validation
 {
 	/**
     * Validates the email address passed as string parameter.
-    *
     * @param Strin $email String containing email address.
-    *
     * @return Bool Returns true if email is valid.
     */
 	public function isValidEmail($email)
@@ -65,7 +63,7 @@ class Validation
 	 * 
 	 * Check is date format is correct: YYYY-MM-DD
 	 * @param $date - the input date
-	 * @return boolean indicating if the date format is valid or not
+	 * @return Bool indicating if the date format is valid or not
 	 */
 	public function isDateFormatValid($date){
 		$regex = "/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/";
@@ -79,11 +77,11 @@ class Validation
 	 * Check if author representation is correct
 	 * The model knows the representation of a Author in the database and this is: 
 	 *  	name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(40)
-	 * @param unknown_type $newAuthor
+	 * @param array $newAuthor
 	 * @return boolean indicating if the date format is valid or not
 	 */
 	public function isAuthorValid($newAuthor) {
-		if(is_array($newAuthor))
+		if(is_array($newAuthor)) {
 			if (! empty ( $newAuthor ["name"] ) && ! empty ( $newAuthor ["surname"] ) && ! empty ( $newAuthor ["email"] ) && ! empty ( $newAuthor ["phone"] )) {
 				if (($this->isLengthStringValid ( $newAuthor ["name"], TABLE_AUTHOR_NAME_LENGTH )) 
 					&& ($this->isLengthStringValid ( $newAuthor ["surname"], TABLE_AUTHOR_SURNAME_LENGTH )) 
@@ -92,8 +90,31 @@ class Validation
 						return true;
 				}
 			}
+		}
 		return false;
 	}
+	/**
+	 * Check if user representation is correct
+	 * The model knows the representation of a user in the database and this is: 
+	 * name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(100)
+	 * @param array $newUser
+	 */
+	public function isUserValid($newUser){
+		var_dump($newUser);
+		if(is_array($newUser)) { 
+			if (! empty ( $newUser ["name"] ) && ! empty ( $newUser ["surname"] ) && ! empty ( $newUser ["email"] ) && ! empty ( $newUser ["password"] )) {
+				if (($this->isLengthStringValid ( $newUser ["name"], TABLE_USER_NAME_LENGTH )) 
+					&& ($this->isLengthStringValid ( $newUser ["surname"], TABLE_USER_SURNAME_LENGTH )) 
+					&& ($this->isValidEmail ( $newUser ["email"] )) 
+					&& ($this->isLengthStringValid ( $newUser ["password"], TABLE_USER_PASSWORD_LENGTH ))) {
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
 }
 
 

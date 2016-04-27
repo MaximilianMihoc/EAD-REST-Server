@@ -93,7 +93,7 @@ define("GENERAL_INVALIDROUTE", "Requested route does not exist");
 define("TABLE_USER_NAME_LENGTH", 25);
 define("TABLE_USER_SURNAME_LENGTH", 25);
 define("TABLE_USER_EMAIL_LENGTH", 50);
-define("TABLE_USER_PASSWORD_LENGTH", 40);
+define("TABLE_USER_PASSWORD_LENGTH", 100);
 
 /* representation of a new author in the DB */
 define("TABLE_AUTHOR_NAME_LENGTH", 25);
