@@ -69,10 +69,14 @@ class BookController {
 	}
 	
 	private function createNewBook($newBook) {
-		$authorID = $newBook['authorID'];
-		if($this->authorModel->getAuthors($authorID)) {
-			if ($newID = $this->model->createNewBook ( $newBook )) {
-				$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+		if(!empty($newBook['authorID'])) { 
+			$authorID = $newBook['authorID'];
+			if($this->authorModel->getAuthors($authorID)) {
+				if ($newID = $this->model->createNewBook ( $newBook )) {
+					$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+				}
+			} else {
+				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 			}
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);

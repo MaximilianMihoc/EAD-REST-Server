@@ -10,6 +10,8 @@ class ValidationTestSuite extends TestSuite {
 		$this->addFile ( "ValidateNumberInRange.php" );
 		$this->addFile ( "ValidateDateFormat.php" );
 		$this->addFile ( "ValidateAuthor.php" );
+		$this->addFile ( "ValidateBook.php" );
+		$this->addFile ( "ValidateUser.php" );
 	}
 }
 

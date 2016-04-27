@@ -127,12 +127,12 @@ class Validation
 					
 				// check if author exists in DB
 				// also check publication date format - maybe add tests in validationSuite
-				if (($this->validationSuite->isLengthStringValid ( $newBook ["title"], TABLE_BOOK_TITLE_LENGTH )) 
-					&& ($this->validationSuite->isLengthStringValid ( $newBook ["ISBN"], TABLE_BOOK_ISBN_LENGTH ))
-					&& ($this->validationSuite->isNumberInRangeValid ( $newBook ["pages"], 1, TABLE_BOOK_PAGES_LENGTH ))
-					&& ($this->validationSuite->isNumberInRangeValid ( $newBook ["rating"], 1, TABLE_BOOK_RATING_LENGTH ))
-					&& ($this->validationSuite->isLengthStringValid ( $newBook ["publisher"], TABLE_BOOK_PUBLISHER_LENGTH ))
-					&& ($this->validationSuite->isDateFormatValid ( $newBook ["publicationDate"]))) {
+				if (($this->isLengthStringValid ( $newBook ["title"], TABLE_BOOK_TITLE_LENGTH )) 
+					&& ($this->isLengthStringValid ( $newBook ["ISBN"], TABLE_BOOK_ISBN_LENGTH ))
+					&& ($this->isNumberInRangeValid ( $newBook ["pages"], 1, TABLE_BOOK_PAGES_LENGTH ))
+					&& ($this->isNumberInRangeValid ( $newBook ["rating"], 1, TABLE_BOOK_RATING_LENGTH ))
+					&& ($this->isLengthStringValid ( $newBook ["publisher"], TABLE_BOOK_PUBLISHER_LENGTH ))
+					&& ($this->isDateFormatValid ( $newBook ["publicationDate"]))) {
 						return true;
 				}
 			}
