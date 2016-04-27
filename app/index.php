@@ -23,6 +23,7 @@ function authenticate(\Slim\Route $route)
 		$app->halt(HTTPSTATUS_UNAUTHORIZED);
 }
 
+/* Maps entry point for CRUD operations on authors table */
 $app->map ( "/authors(/:id)", "authenticate", function ($authorID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
@@ -52,6 +53,7 @@ $app->map ( "/authors(/:id)", "authenticate", function ($authorID = null) use($a
 	return new loadRunMVCComponents ( "AuthorModel", "AuthorController", "view", $action, $app, $parameters );
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
+/* Maps entry point for CRUD operations on books table */
 $app->map ( "/books(/:id)", "authenticate", function ($bookID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
@@ -81,6 +83,7 @@ $app->map ( "/books(/:id)", "authenticate", function ($bookID = null) use($app) 
 	return new loadRunMVCComponents ( "BookModel", "BookController", "view", $action, $app, $parameters );
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
+/* Maps entry point to get books for particular author */
 $app->map ( "/author/:id/books", "authenticate", function ($authorID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
@@ -93,6 +96,7 @@ $app->map ( "/author/:id/books", "authenticate", function ($authorID = null) use
 	return new loadRunMVCComponents ( "BookModel", "BookController", "view", $action, $app, $parameters );
 } )->via ( "GET" );
 
+/* Maps entry point to get authors for particular book */
 $app->map ( "/book/:id/authors", "authenticate", function ($bookID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
@@ -105,6 +109,7 @@ $app->map ( "/book/:id/authors", "authenticate", function ($bookID = null) use($
 	return new loadRunMVCComponents ( "AuthorModel", "AuthorController", "view", $action, $app, $parameters );
 } )->via ( "GET" );
 
+/* Maps entry point to search for author */
 $app->map ( "/authors/search(/:searchingString)", "authenticate", function ($searchingString = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
@@ -119,6 +124,7 @@ $app->map ( "/authors/search(/:searchingString)", "authenticate", function ($sea
 	return new loadRunMVCComponents ( "AuthorModel", "AuthorController", "view", $action, $app, $parameters );
 } )->via ( "GET" );
 
+/* Maps entry point for CRUD operations on users table */
 $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
