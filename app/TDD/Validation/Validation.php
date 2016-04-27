@@ -100,7 +100,6 @@ class Validation
 	 * @param array $newUser
 	 */
 	public function isUserValid($newUser){
-		var_dump($newUser);
 		if(is_array($newUser)) { 
 			if (! empty ( $newUser ["name"] ) && ! empty ( $newUser ["surname"] ) && ! empty ( $newUser ["email"] ) && ! empty ( $newUser ["password"] )) {
 				if (($this->isLengthStringValid ( $newUser ["name"], TABLE_USER_NAME_LENGTH )) 
@@ -114,6 +113,32 @@ class Validation
 		return false;
 	}
 	
+	/**
+	 * 
+	 * Enter description here ...
+	 * @param array $newBook
+	 */
+	public function isBookValid($newBook){
+		if(is_array($newBook)) { 
+			if (!empty ( $newBook ["title"] ) && !empty ( $newBook ["authorID"] ) 
+				&& !empty ( $newBook ["ISBN"] ) && !empty ( $newBook ["pages"] )
+				&& !empty ( $newBook ["rating"] ) && !empty ( $newBook ["publisher"] )
+				&& !empty ( $newBook ["publicationDate"] )) {
+					
+				// check if author exists in DB
+				// also check publication date format - maybe add tests in validationSuite
+				if (($this->validationSuite->isLengthStringValid ( $newBook ["title"], TABLE_BOOK_TITLE_LENGTH )) 
+					&& ($this->validationSuite->isLengthStringValid ( $newBook ["ISBN"], TABLE_BOOK_ISBN_LENGTH ))
+					&& ($this->validationSuite->isNumberInRangeValid ( $newBook ["pages"], 1, TABLE_BOOK_PAGES_LENGTH ))
+					&& ($this->validationSuite->isNumberInRangeValid ( $newBook ["rating"], 1, TABLE_BOOK_RATING_LENGTH ))
+					&& ($this->validationSuite->isLengthStringValid ( $newBook ["publisher"], TABLE_BOOK_PUBLISHER_LENGTH ))
+					&& ($this->validationSuite->isDateFormatValid ( $newBook ["publicationDate"]))) {
+						return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 }
 

@@ -29,47 +29,23 @@ class BookModel {
 		} 
 		return false;
 	}
-	
-	/**
-	 *
-	 * @param array $BookRepresentation:
-	 *        	an associative array containing the detail of the new Book
-	 */
+
 	public function createNewBook($newBook) {
-		// validation of the values of the new Book
-		// compulsory values		
-		if (!empty ( $newBook ["title"] ) && !empty ( $newBook ["authorID"] ) 
-			&& !empty ( $newBook ["ISBN"] ) && !empty ( $newBook ["pages"] )
-			&& !empty ( $newBook ["rating"] ) && !empty ( $newBook ["publisher"] )
-			&& !empty ( $newBook ["publicationDate"] )) {
-				
-			// check if author exists in DB
-			// also check publication date format - maybe add tests in validationSuite
-			if (($this->validationSuite->isLengthStringValid ( $newBook ["title"], TABLE_BOOK_TITLE_LENGTH )) 
-				&& ($this->validationSuite->isLengthStringValid ( $newBook ["ISBN"], TABLE_BOOK_ISBN_LENGTH ))
-				&& ($this->validationSuite->isLengthStringValid ( $newBook ["publisher"], TABLE_BOOK_PUBLISHER_LENGTH ))) {
-					return $this->BooksDAO->insert ( $newBook );
-			}
+		// validation of the values of the new Book	
+		if ($this->validationSuite->isBookValid($newBook)) {
+			return $this->BooksDAO->insert ( $newBook );
 		}
-		// if validation fails or insertion fails
 		return (false);
 	}
+	
 	public function updateBook($bookID, $bookNewRepresentation) {
-		
 		if (is_numeric ( $bookID ))
-			if (!empty ( $bookNewRepresentation ["title"] ) && !empty ( $bookNewRepresentation ["authorID"] ) 
-				&& !empty ( $bookNewRepresentation ["ISBN"] ) && !empty ( $bookNewRepresentation ["pages"] )
-				&& !empty ( $bookNewRepresentation ["rating"] ) && !empty ( $bookNewRepresentation ["publisher"] )
-				&& !empty ( $bookNewRepresentation ["publicationDate"] ))  {
-				
-					
-				if($updateRows = $this->BooksDAO->updateBook($bookID, $bookNewRepresentation))
-				{
-					return ($updateRows);
-				}
+			if ($this->validationSuite->isBookValid($newBook)) {
+				return ($updateRows);
 			}
 		return false;
 	}
+	
 	// validation needed
 	public function searchBooks($string) {
 		return ($this->BooksDAO->searchBooks($string));

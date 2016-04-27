@@ -48,18 +48,13 @@ class UsersDAO {
 		return ($this->dbManager->getLastInsertedID ());
 	}
 	public function updateUser($userID, $parametersArray) {
-		//TODO
-		$sqlIns = "UPDATE `users` SET `name` = ?, `surname` = ?,  `email` = ?, `password` = ? WHERE `id` = ? ";
-		
-		//(`name`, `surname`, `email`, `password`)
-		
+		$sqlIns = "UPDATE `users` SET `name` = ?, `surname` = ?,  `password` = ? WHERE `id` = ? ";
 		//execute the query
 		$sqlStmt = $this->dbManager->prepareQuery($sqlIns);
 		$this->dbManager->bindValue($sqlStmt, 1, $parametersArray['name'], $this->dbManager->STRING_TYPE);
 		$this->dbManager->bindValue($sqlStmt, 2, $parametersArray['surname'], $this->dbManager->STRING_TYPE);
-		$this->dbManager->bindValue($sqlStmt, 3, $parametersArray['email'], $this->dbManager->STRING_TYPE);
-		$this->dbManager->bindValue($sqlStmt, 4, $parametersArray['password'], $this->dbManager->STRING_TYPE);
-		$this->dbManager->bindValue($sqlStmt, 5, $userID, $this->dbManager->INT_TYPE);
+		$this->dbManager->bindValue($sqlStmt, 3, $parametersArray['password'], $this->dbManager->STRING_TYPE);
+		$this->dbManager->bindValue($sqlStmt, 4, $userID, $this->dbManager->INT_TYPE);
 		$this->dbManager->executeQuery ( $sqlStmt );
 		
 		return ($this->dbManager->getNumberOfAffectedRows ($sqlStmt));

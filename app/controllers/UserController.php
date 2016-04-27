@@ -75,10 +75,16 @@ class UserController {
 	}
 	
 	private function createNewUser($newUser) {
-		if ($newID = $this->model->createNewUser ( $newUser )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+		//check if user email already exists
+		$user = $this->model->getUserByEmail ( $newUser['email'] );
+		if($user == null) {
+			if ($newID = $this->model->createNewUser ( $newUser )) {
+				$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+			} else {
+				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+			}
 		} else {
-			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, USER_EXISTS);
 		}
 	}
 	private function deleteUser($userId) {
@@ -87,14 +93,18 @@ class UserController {
 		} else {
 			$this->setApiResponseAndStatus(HTTPSTATUS_NOTFOUND, GENERAL_NOCONTENT_MESSAGE);
 		}
-		
 	}
 	
 	private function updateUser($userId, $toUpdateUser) {
-		if ($this->model->updateUser ( $userId, $toUpdateUser )) {
-			$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $userId);
+		$user = $this->model->getUserByEmail ( $toUpdateUser['email'] );
+		if($user != null) {
+			if ($this->model->updateUser ( $userId, $toUpdateUser )) {
+				$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $userId);
+			} else {
+				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+			}
 		} else {
-			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, USER_DOES_NOT_EXIST);
 		}
 	}
 	private function searchUsers($string) {

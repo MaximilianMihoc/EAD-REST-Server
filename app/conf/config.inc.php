@@ -80,7 +80,6 @@ define("GENERAL_RESOURCE_UPDATED", "Resource has been updated");
 define("GENERAL_RESOURCE_DELETED", "Resource has been deleted");
 define("GENERAL_RESOURCE_NOTFOUND", "Resource not found");
 
-
 define("GENERAL_FORBIDDEN", "Request is ok but action is forbidden");
 define("GENERAL_INVALIDBODY", "Request is ok but transmitted body is invalid");
 define("GENERAL_INVALIDINDEX", "Request is missing the index");
@@ -94,6 +93,8 @@ define("TABLE_USER_NAME_LENGTH", 25);
 define("TABLE_USER_SURNAME_LENGTH", 25);
 define("TABLE_USER_EMAIL_LENGTH", 50);
 define("TABLE_USER_PASSWORD_LENGTH", 100);
+define("USER_EXISTS", "User already exists with this email. Please use different email address");
+define("USER_DOES_NOT_EXIST", "User not found. Make sure you use an existing email address");
 
 /* representation of a new author in the DB */
 define("TABLE_AUTHOR_NAME_LENGTH", 25);
@@ -105,8 +106,8 @@ define("TABLE_AUTHOR_MAX_PHONE", 999999999);
 /* representation of a new author in the DB */
 define("TABLE_BOOK_TITLE_LENGTH", 100);
 define("TABLE_BOOK_ISBN_LENGTH", 30);
-define("TABLE_BOOK_PAGES_LENGTH", 5);
-define("TABLE_BOOK_RATING_LENGTH", 13);
+define("TABLE_BOOK_PAGES_LENGTH", 10000);
+define("TABLE_BOOK_RATING_LENGTH", 5);
 define("TABLE_BOOK_PUBLISHER_LENGTH", 100);
 
 ?>

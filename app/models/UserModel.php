@@ -45,7 +45,7 @@ class UserModel {
 	}
 	public function updateUser($userID, $userNewRepresentation) {
 		if (is_numeric ( $userID ))
-			if ($this->validationSuite->isUserValid($newUser)) {
+			if ($this->validationSuite->isUserValid($userNewRepresentation)) {
 				if($updateRows = $this->UsersDAO->updateUser($userID, $userNewRepresentation)) {
 					return ($updateRows);
 				}
