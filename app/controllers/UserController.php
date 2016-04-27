@@ -1,16 +1,20 @@
 <?php
+require_once "/../TDD/Validation/Validation.php";
 class UserController {
 	private $slimApp;
 	private $model;
 	private $requestBody;
+	private $validationSuite;
 	public function __construct($model, $action = null, $slimApp, $parameters = null) {
 		$this->model = $model;
 		$this->slimApp = $slimApp;
-		$this->requestBody = json_decode ( $this->slimApp->request->getBody (), true ); // this must contain the representation of the new user
-				
-			
+		$this->requestBody = json_decode ( $this->slimApp->request->getBody (), true ); 
+		$this->validationSuite = new Validation ();
+		
 		if (! empty ( $parameters ["id"] ))
 			$id = $parameters ["id"];
+		else 
+			$id = null;
 		
 		switch ($action) {
 			case ACTION_AUTHENTICATE_USER:
@@ -42,7 +46,7 @@ class UserController {
 	}
 	private function validateCredentials($parameters) {
 		$email = $parameters ["email"];
-		$password = $parameters ["password"];
+		$password = sha1($parameters ["password"]);
 		
 		if(!empty($email) && !empty($password)){
 			$user = $this->model->getUserByEmail ( $email );
@@ -76,15 +80,21 @@ class UserController {
 	
 	private function createNewUser($newUser) {
 		//check if user email already exists
-		$user = $this->model->getUserByEmail ( $newUser['email'] );
-		if($user == null) {
-			if ($newID = $this->model->createNewUser ( $newUser )) {
-				$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+		if($this->validationSuite->isUserValid($newUser)) {
+			$user = $this->model->getUserByEmail ( $newUser['email'] );
+			if($user == null) {
+				$passHash = sha1($newUser['password']);
+				$newUser['password'] = $passHash;
+				if ($newID = $this->model->createNewUser ( $newUser )) {
+					$this->setApiResponseAndStatus(HTTPSTATUS_CREATED, GENERAL_RESOURCE_CREATED, $newID);
+				} else {
+					$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+				}
 			} else {
-				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, USER_EXISTS);
 			}
 		} else {
-			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, USER_EXISTS);
+			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
 		}
 	}
 	private function deleteUser($userId) {
@@ -96,15 +106,19 @@ class UserController {
 	}
 	
 	private function updateUser($userId, $toUpdateUser) {
-		$user = $this->model->getUserByEmail ( $toUpdateUser['email'] );
-		if($user != null) {
-			if ($this->model->updateUser ( $userId, $toUpdateUser )) {
-				$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $userId);
+		if($this->validationSuite->isUserValid($toUpdateUser)) {
+			$user = $this->model->getUserByEmail ( $toUpdateUser['email'] );
+			if($user != null) {
+				$passHash = sha1($toUpdateUser['password']);
+				$toUpdateUser['password'] = $passHash;
+				if ($this->model->updateUser ( $userId, $toUpdateUser )) {
+					$this->setApiResponseAndStatus(HTTPSTATUS_OK, GENERAL_RESOURCE_UPDATED, $userId);
+				} else {
+					$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+				}
 			} else {
-				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, GENERAL_INVALIDBODY);
+				$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, USER_DOES_NOT_EXIST);
 			}
-		} else {
-			$this->setApiResponseAndStatus(HTTPSTATUS_BADREQUEST, USER_DOES_NOT_EXIST);
 		}
 	}
 	private function searchUsers($string) {
