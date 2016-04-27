@@ -70,7 +70,7 @@ class BooksDAO {
 	public function searchBooks($searchString) {
 		$searchString = '%' . $searchString . '%';
 		
-		$sqlIns = "Select * FROM `books` WHERE `title` LIKE ? ";
+		$sqlIns = "Select * FROM `books` WHERE `title` LIKE ? GROUP BY `ISBN` ";
 		
 		//execute the query
 		$sqlStmt = $this->dbManager->prepareQuery($sqlIns);

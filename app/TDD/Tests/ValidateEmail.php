@@ -1,6 +1,6 @@
 <?php
 /**
-* @author Max
+* @author Admins
 * Test isValidEmail Method
 */
 class ValidateEmail extends UnitTestCase 
@@ -62,7 +62,7 @@ class ValidateEmail extends UnitTestCase
 		$this->assertFalse($validateEmail);
 		$validateEmail = $this->validation->isValidEmail("email..email@domain.com");
 		$this->assertFalse($validateEmail);
-		$validateEmail = $this->validation->isValidEmail("あいうえお@domain.com");
+		$validateEmail = $this->validation->isValidEmail("ã�‚ã�„ã�†ã�ˆã�Š@domain.com");
 		$this->assertFalse($validateEmail);
 		$validateEmail = $this->validation->isValidEmail("email@domain.com (Joe Smith)");
 		$this->assertFalse($validateEmail);

@@ -121,6 +121,7 @@ class UserController {
 			}
 		}
 	}
+	
 	private function searchUsers($string) {
 		$answer = $this->model->searchUsers($string);
 		if ($answer != null) {

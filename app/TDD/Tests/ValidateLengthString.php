@@ -1,6 +1,6 @@
 <?php
 /**
-* @author Max
+* @author Admins
 * Test isLengthStringValid Method
 */
 class ValidateLengthString extends UnitTestCase 

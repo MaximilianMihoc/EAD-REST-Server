@@ -18,7 +18,7 @@ class view
 	
 		switch ($contentType) {
 			case "application/json":
-				$response = json_encode($arrayData);
+				$response = json_encode($arrayData, JSON_PRETTY_PRINT);
 				break;
 			case "application/xml":				
 				require_once('XML/Serializer.php');
@@ -42,7 +42,7 @@ class view
 				$response = $this->array_2_csv($arrayData);
 				break;
 			default:
-				$response = json_encode($this->model->apiResponse);
+				$response = json_encode($arrayData, JSON_PRETTY_PRINT);
 				break;
 		}
 			

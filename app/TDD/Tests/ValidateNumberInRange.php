@@ -1,6 +1,6 @@
 <?php
 /**
-* @author Max
+* @author Admins
 * Test isNumberInRangeValid Method
 */
 class ValidateNumberInRange extends UnitTestCase 

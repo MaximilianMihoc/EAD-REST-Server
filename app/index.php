@@ -110,6 +110,21 @@ $app->map ( "/book/:id/authors", "authenticate", function ($bookID = null) use($
 } )->via ( "GET" );
 
 /* Maps entry point to search for author */
+$app->map ( "/books/search(/:searchingString)", "authenticate", function ($searchingString = null) use($app) {
+	
+	$httpMethod = $app->request->getMethod ();
+	$action = null;
+	$parameters ["SearchingString"] = $searchingString;
+
+	if ($searchingString != null)
+		$action = ACTION_SEARCH_BOOKS;
+	else
+		$action = ACTION_GET_BOOKS;
+
+	return new loadRunMVCComponents ( "BookModel", "BookController", "view", $action, $app, $parameters );
+} )->via ( "GET" );
+
+/* Maps entry point to search for author */
 $app->map ( "/authors/search(/:searchingString)", "authenticate", function ($searchingString = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
