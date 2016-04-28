@@ -1,4 +1,12 @@
 <?php
+/**
+* Team: Admins 
+* Members: Maximilian Mihoc   - C12728559
+* 		   Adam Miedziejewski - C12701419
+*
+* Project Name: Authors and Books Database
+*
+*/
 require_once "../Slim/Slim.php";
 Slim\Slim::registerAutoloader ();
 
